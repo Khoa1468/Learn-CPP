@@ -3,59 +3,76 @@
 
 using namespace std;
 
-struct ConNguoi 
-{
-	ConNguoi(string ht, int t, float cc, float cn) {
+struct Con_Nguoi {
+	Con_Nguoi(string ht, int t, float v1, float cc) {
 		ho_ten = ht;
 		tuoi = t;
+		vong_mot = v1;
 		chieu_cao = cc;
-		can_nang = cn;
 		con_zin = true;
+	}
+	virtual string choi_xep_hinh()
+	{
+		return "truyen thong";
 	}
 	string ho_ten;
 	int tuoi;
+	float vong_mot;
 	float chieu_cao;
-	float can_nang;
 	bool con_zin;
 };
 
-string chi_so_BMI(ConNguoi nguoi) 
+struct GaiNgoan : public Con_Nguoi 
 {
-	float bmi = nguoi.can_nang / (nguoi.chieu_cao * nguoi.chieu_cao);
-	string ket_qua;
-	if (bmi < 18.5)
-	{
-		ket_qua = "gay vl";
+	GaiNgoan(string ht, int t, float v1, float cc) : Con_Nguoi(ht, t, v1, cc)
+	{  }
+	string choi_xep_hinh() {
+		return "Up thia";
 	}
-	else if (bmi > 25)
-	{
-		ket_qua = "bung to lo xo be";
-	}
-	else
-	{
-		ket_qua = "dep zai co nhieu gai yeu";
-	}
-	return ket_qua;
-}
+};
 
-void dong_thoi_gian(ConNguoi nguoi, int nam_troi_qua)
+struct GaiHu : public Con_Nguoi 
 {
-	for(int i = 0 ; i < nam_troi_qua ; i++)
-	{
-		nguoi.can_nang = nguoi.can_nang + 2;
+	GaiHu(string ht, int t, float v1, float cc) : Con_Nguoi(ht, t, v1, cc)
+	{  }
+	string choi_xep_hinh() {
+		return "69";
 	}
+};
 
-	string ket_qua = chi_so_BMI(nguoi);
-	cout << "Ban " << nguoi.ho_ten << " " << nam_troi_qua << " nam troi qua se " << ket_qua << endl;
+struct Gay : public Con_Nguoi 
+{
+	Gay(string ht, int t, float v1, float cc) : Con_Nguoi(ht, t, v1, cc)
+	{  }
+	string choi_xep_hinh() {
+		return "Dau kiem";
+	}
+};
+
+void pha_zin(Con_Nguoi * pNguoi) 
+{
+	cout << "Thuc hien pha zin em " << pNguoi->ho_ten << " theo kieu " << pNguoi->choi_xep_hinh() << endl;
+	pNguoi->con_zin = false;
 }
 
 int main() 
 {
-	ConNguoi khoa("Khoa", 18, 1.8, 60);
-	ConNguoi *pointer = &khoa;
-	string ket_qua = chi_so_BMI(khoa);
-	dong_thoi_gian(khoa, 10);
+	Con_Nguoi * hoi_phu_nu[5] = 
+	{
+		new Con_Nguoi("Thao", 22, 95, 1.65),
+		new GaiNgoan("Lan", 18, 90, 1.70),
+		new GaiHu("Huong", 29, 85, 1.62),
+		new Con_Nguoi("Nhung", 16, 80, 1.63),
+		new Gay("Tuyet", 30, 100, 1.65),
+	};
+	
+	Con_Nguoi *pBo_nhi = nullptr;
+	
+	for(int i = 0; i < 5; i++) 
+	{
+		pBo_nhi = hoi_phu_nu[i];
+		pha_zin(pBo_nhi);
+	}
 
-	system("pause");
 	return 0;
 }
